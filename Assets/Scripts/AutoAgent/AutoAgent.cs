@@ -6,6 +6,11 @@ using UnityEngine.Diagnostics;
 
 public class AutoAgent : Agent
 {
+    public float wanderDistance = 1;
+    public float wanderRadius = 3;
+    public float wanderDisplacement = 5;
+
+    public float wanderAngle { get; set; } = 0;
 
     // Update is called once per frame
     void Update()
@@ -15,13 +20,21 @@ public class AutoAgent : Agent
         {
             Debug.DrawLine(transform.position, gameObject.transform.position);
 
-            //if (< game objects array contains at least one game object) 
             if (gameObjects.Length > 0) 
             {
-                Vector3 direction = (gameObjects[0].transform.position - transform.position).normalized;
-
-                movement.ApplyForce(direction * 2);
+                movement.ApplyForce(Steering.Seek(this, gameObjects[0]) * 0.0f);
+                movement.ApplyForce(Steering.Flee(this, gameObjects[0]) * 1.0f);
             }
+            //if (movement.acceleration.sqrMagnitude <= movement.maxForce * 0.1f)
+            //{
+            //    movement.ApplyForce(Steering.Wander(this));
+            //}
+
+        }
+
+        if (movement.acceleration.sqrMagnitude <= movement.maxForce * 0.1f)
+        {
+            movement.ApplyForce(Steering.Wander(this));
         }
 
         transform.position = Utils.Wrap(transform.position, new Vector3(-10, -10, -10), new Vector3(10, 10, 10));

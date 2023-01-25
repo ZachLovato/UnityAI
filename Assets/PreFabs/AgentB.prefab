@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abff2843915d0bf46b053d13e090784d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tagName: AgentA
+  tagName: Agent01
   distance: 1
   maxAngle: 45
   raycastTransform: {fileID: 1333201215199520884}
@@ -166,7 +166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abff2843915d0bf46b053d13e090784d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tagName: AgentB
+  tagName: Agent02
   distance: 1
   maxAngle: 45
   raycastTransform: {fileID: 1333201215199520884}

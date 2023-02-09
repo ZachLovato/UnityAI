@@ -21,7 +21,7 @@ public class AttackState : State
 
 		AnimationClip[] clips = owner.animator.runtimeAnimatorController.animationClips;
 
-		AnimationClip clip = clips.FirstOrDefault<AnimationClip>(clip => clip.name == "Mixamo.com");
+		AnimationClip clip = clips.FirstOrDefault<AnimationClip>(clip => clip.name == "Punch");
 		timer = (clip != null) ? clip.length : 1;
 	}
 

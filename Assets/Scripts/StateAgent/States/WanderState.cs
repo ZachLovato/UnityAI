@@ -17,7 +17,7 @@ public class WanderState : State
 		owner.movement.Resume();
 		// create random target position around owner 
 		//target = owner.transform.position + < add a random offset in a circle(Quaternion.AngleAxis)>;
-		target = owner.transform.position + Quaternion.AngleAxis(Random.RandomRange(0,180), Vector3.up).eulerAngles;
+		target = owner.transform.position + Quaternion.AngleAxis(Random.Range(0,360), Vector3.up) * Vector3.forward * 5;
 		//Quaternion.AngleAxis(180, Vector3.zero);// + (Vector3)(Quaternion.AngleAxis(180f, Vector3.fwd));
 	}
 

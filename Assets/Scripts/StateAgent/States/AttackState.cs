@@ -17,12 +17,27 @@ public class AttackState : State
 	{
 		owner.navigation.targetNode = null;
 		owner.movement.Stop();
-		owner.animator.SetTrigger("attack");
+		owner.animator.SetTrigger("Attack");
 
 		AnimationClip[] clips = owner.animator.runtimeAnimatorController.animationClips;
 
 		AnimationClip clip = clips.FirstOrDefault<AnimationClip>(clip => clip.name == "Punch");
+		
 		timer = (clip != null) ? clip.length : 1;
+
+		var colliders = Physics.OverlapSphere(owner.transform.position, 2);
+		foreach (var collider in colliders)
+		{
+			if (collider.gameObject == owner || collider.gameObject.CompareTag(owner.gameObject.tag)) continue;
+
+			if (collider.gameObject.TryGetComponent<StateAgent>(out var component))
+			{
+				component.health.value -= Random.Range(10,30);
+			}
+		}
+
+
+
 	}
 
 	public override void OnExit()

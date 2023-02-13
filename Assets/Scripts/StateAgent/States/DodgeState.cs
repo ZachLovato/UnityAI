@@ -1,18 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
-public class DodgeState : MonoBehaviour
+public class DodgeState : State
 {
-    // Start is called before the first frame update
-    void Start()
+    public DodgeState(StateAgent owner) : base(owner)
     {
-        
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void OnEnter()
     {
-        
+        owner.navigation.targetNode = null;
+        owner.movement.Resume();
+    }
+
+    public override void OnExit()
+    {
+
+    }
+
+    public override void OnUpdate()
+    {
+        if (owner.enemySeen)
+        {
+            Vector3 direcction = (owner.transform.position - owner.perceived[0].transform.position).normalized;
+            owner.movement.MoveTowards(owner.transform.position + direcction * 5);
+        }
     }
 }

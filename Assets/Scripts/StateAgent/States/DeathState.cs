@@ -2,17 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DeathState : MonoBehaviour
+public class DeathState : State
 {
-    // Start is called before the first frame update
-    void Start()
+    public DeathState(StateAgent owner) : base(owner)
     {
-        
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void OnEnter()
     {
-        
+        owner.animator.SetBool("IsDead", true);
+        owner.movement.Stop();
+    }
+
+    public override void OnExit()
+    {
+
+    }
+
+    public override void OnUpdate()
+    {
+        if (owner.animationDone)
+        {
+            GameObject.Destroy(owner.gameObject, 1.5f);
+        }
     }
 }

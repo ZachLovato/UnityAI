@@ -17,7 +17,7 @@ public class AttackState : State
 	{
 		owner.navigation.targetNode = null;
 		owner.movement.Stop();
-		owner.animator.SetTrigger("Attack");
+		
 
 		AnimationClip[] clips = owner.animator.runtimeAnimatorController.animationClips;
 
@@ -32,12 +32,15 @@ public class AttackState : State
 
 			if (collider.gameObject.TryGetComponent<StateAgent>(out var component))
 			{
-				component.health.value -= Random.Range(10,30);
+				
+				if (component.health.value > 0)
+				{
+                    owner.animator.SetTrigger("Attack");
+                    component.health.value -= Random.Range(10, 30);
+                }
+				else owner.stateMachine.StartState(nameof(IdleState));
 			}
 		}
-
-
-
 	}
 
 	public override void OnExit()
@@ -47,12 +50,6 @@ public class AttackState : State
 
 	public override void OnUpdate()
 	{
-		//< decrease the timer using time delta>
-		timer -= Time.deltaTime;
-		if (timer <= 0) 
-		{
-			//< start owner state machine to chase state>
-			owner.stateMachine.StartState(nameof(ChaseState));
-		}
+
 	}
 }

@@ -30,12 +30,14 @@ public class WanderState : State
 	{
 		// draw debug line from current position to target position 
 		Debug.DrawLine(owner.transform.position, target);
+		//owner.movement.MoveTowards(target);
+		////if (<if owner movement velocity magnitude is zero >) 
+		//if (owner.movement.velocity.magnitude == 0)
+		//{
+		//	//< start idle state>
+		//	owner.stateMachine.StartState(nameof(IdleState));
+		//}
 		owner.movement.MoveTowards(target);
-		//if (<if owner movement velocity magnitude is zero >) 
-		if (owner.movement.velocity.magnitude == 0)
-		{
-			//< start idle state>
-			owner.stateMachine.StartState(nameof(IdleState));
-		}
-	}
+
+    }
 }

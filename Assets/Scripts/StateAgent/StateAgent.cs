@@ -52,9 +52,16 @@ public class StateAgent : Agent
         stateMachine.AddTransition(nameof(PatrolState), new Transition(new Condition[] { enemySeenCondition, healthOkCondition }), nameof(ChaseState));
         stateMachine.AddTransition(nameof(PatrolState), new Transition(new Condition[] { enemySeenCondition, healthLowCondition }), nameof(DodgeState));
 
-		// add chase to attack
-		// add chase to idle
-		// add chase to dodge
+        stateMachine.AddTransition(nameof(ChaseState), new Transition(new Condition[] { enemyNotSeenCondition, timerExpiredCondition }), nameof(IdleState));
+        stateMachine.AddTransition(nameof(ChaseState), new Transition(new Condition[] { enemyNear, healthOkCondition }), nameof(AttackState));
+
+		stateMachine.AddTransition(nameof(WanderState), new Transition(new Condition[] { atDestinationCondition }), nameof(IdleState));
+		stateMachine.AddTransition(nameof(WanderState), new Transition(new Condition[] { enemyNear, healthOkCondition }), nameof(AttackState));
+		stateMachine.AddTransition(nameof(WanderState), new Transition(new Condition[] { enemySeenCondition, healthLowCondition }), nameof(DodgeState));
+
+		stateMachine.AddTransition(nameof(AttackState), new Transition(new Condition[] { enemySeenCondition, timerExpiredCondition }), nameof(ChaseState));
+
+		stateMachine.AddTransition(nameof(DodgeState), new Transition(new Condition[] { enemyNotSeenCondition }), nameof(IdleState));
 
         stateMachine.AddAnyTransition(new Transition(new Condition[] { deathCondition}), nameof(DeathState));
 
@@ -71,9 +78,9 @@ public class StateAgent : Agent
 		enemyDistance.value = (enemySeen) ? (Vector3.Distance(transform.position, perceived[0].transform.position)) : float.MaxValue;
 		timer.value -= Time.deltaTime;
 		atDestination.value = ((movement.destination - transform.position).sqrMagnitude <= 1);
-		animationDone.value = (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && !animator.IsInTransition(0));
+        animationDone.value = (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.8f && !animator.IsInTransition(0));
 
-		stateMachine.Update();
+        stateMachine.Update();
         if (navigation.targetNode != null)
         {
             movement.MoveTowards(navigation.targetNode.transform.position);
